@@ -109,6 +109,7 @@ public class Robot extends TimedRobot {
             CommandScheduler.getInstance().cancel(m_autonomousCommand);
         }
         m_robotContainer.shooterHomingCommand().schedule();
+        m_robotContainer.intakeHomingCommand().schedule();
     }
 
     @Override

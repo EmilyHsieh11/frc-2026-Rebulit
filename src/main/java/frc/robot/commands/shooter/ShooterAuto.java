@@ -28,14 +28,14 @@ public class ShooterAuto extends Command{
     }
 
     @Override
-    public boolean isFinished() {
-        return false;
-    }
-
-    @Override
     public void end(boolean interrupted) {
         shooter.stopHoodMotor();
         shooter.shootshoot(false);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return false;
     }
     
 }

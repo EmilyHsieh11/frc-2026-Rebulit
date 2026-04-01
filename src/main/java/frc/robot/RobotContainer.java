@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
@@ -76,6 +77,7 @@ public class RobotContainer {
     public RobotContainer() {
         NamedCommands.registerCommand("Left path shoot", shooterAuto);
         NamedCommands.registerCommand("Intaking", intakeLowerMove);
+        NamedCommands.registerCommand("TimedShoot", new ParallelDeadlineGroup(new WaitCommand(2.0), shooterAuto));
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
 
@@ -88,9 +90,9 @@ public class RobotContainer {
 
     private void configureBindings() {
 
-        // shooter.setDefaultCommand(shooterMove);
+        shooter.setDefaultCommand(shooterMove);
         
-        xBox.b().onTrue(intakeHangUp);
+        xBox.b().toggleOnTrue(intakeHangUp);
         intake.setDefaultCommand(intakeLowerMove);
 
         drivetrain.setVisionSubsystem(vision);
@@ -164,6 +166,7 @@ public class RobotContainer {
             Commands.runOnce(() -> intake.resetPivotEncoder(), intake)
         );
     }
+
 
     
 }

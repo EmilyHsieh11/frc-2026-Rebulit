@@ -11,6 +11,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Left path shoot"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [

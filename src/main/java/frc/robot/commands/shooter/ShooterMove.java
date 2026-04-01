@@ -31,10 +31,9 @@ public class ShooterMove extends Command{
         if(controller.getHID().getRightBumperButton()) {
             shooter.shootshoot(true);
         } else {
-            shooterSpeed = 0;
-            indexerSpeed = 0;
+            shooter.shootshoot(false);
         }
-        shooter.shootshoot(true);
+
 
         // 角度控制：按一下增加，不按時 m_targetAngle 會被子系統記住，不會歸零
         if(controller.getHID().getXButtonPressed()) {

@@ -11,21 +11,47 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Left path 2"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left path 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeLowerMove"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Left path 3"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left path 3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeLowerMove"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Left path shoot"
           }
         }
       ]

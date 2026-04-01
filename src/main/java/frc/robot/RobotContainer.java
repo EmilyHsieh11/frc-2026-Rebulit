@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
@@ -54,10 +56,11 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    private final Shooter shooter = new Shooter();
     private final Intake intake = new Intake();
+    private final IntakeMove intakeLowerMove = new IntakeMove(intake,IntakeConstants.kpivotLowered,IntakeConstants.kIntakeVolts);
+    private final IntakeMove intakeHangUp = new IntakeMove(intake, IntakeConstants.kpivotRaised, 0.0);
 
-    private final IntakeMove intakeMove = new IntakeMove(intake,IntakeConstants.kpivotLowered,IntakeConstants.kIntakeVolts);
+    private final Shooter shooter = new Shooter();
     private final ShooterMove shooterMove = new ShooterMove(shooter, xBox);
     private final ShooterAuto shooterAuto = new ShooterAuto(shooter, ShooterConstants.hoodBiggestAngle);
     private final ShooterAutoAimAngle shooterAimAngle = new ShooterAutoAimAngle(shooter, drivetrain, xBox);
@@ -72,6 +75,7 @@ public class RobotContainer {
 
     public RobotContainer() {
         NamedCommands.registerCommand("Left path shoot", shooterAuto);
+        NamedCommands.registerCommand("Intaking", intakeLowerMove);
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
 
@@ -85,21 +89,9 @@ public class RobotContainer {
     private void configureBindings() {
 
         // shooter.setDefaultCommand(shooterMove);
-
-        // xBox.x().toggleOnTrue(intakeMove);
-
-        xBox.start().onTrue(
-            new InstantCommand(() -> intake.resetPivotEncoder(), intake)
-        );
-        xBox.a().onTrue(
-            new IntakeMove(intake, IntakeConstants.kpivotLowered, IntakeConstants.kIntakeVolts)
-        );
         
-        xBox.b().onTrue(
-           new IntakeMove(intake, IntakeConstants.kpivotRaised, 0.0)
-        );
-    
-
+        xBox.b().onTrue(intakeHangUp);
+        intake.setDefaultCommand(intakeLowerMove);
 
         drivetrain.setVisionSubsystem(vision);
 
@@ -129,8 +121,14 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        /* Run the path selected from the auto chooser */
-        return autoChooser.getSelected();
+        return new SequentialCommandGroup(
+            shooterHomingCommand(),
+            intakeHomingCommand(),
+            new ParallelDeadlineGroup(
+                autoChooser.getSelected(), 
+                new IntakeMove(intake, IntakeConstants.kpivotLowered, IntakeConstants.kIntakeVolts))
+        );
+    
     }
 
     Command getAutoAimDriveCommand() {
@@ -138,7 +136,7 @@ public class RobotContainer {
         .withVelocityX(-xBox.getLeftY() * MaxSpeed)
         .withVelocityY(-xBox.getLeftX() * MaxSpeed)
         .withTargetDirection(drivetrain.getRobotHubHeading())
-        );
+        );  
     }
 
 
@@ -158,6 +156,12 @@ public class RobotContainer {
                 shooter.setTargetAngle(0);   // 設定目標為 0
                 shooter.setHomingMode(false); // 把控制權還給 periodic 的 PID
             }, shooter)
+        );
+    }
+
+    public Command intakeHomingCommand() {
+        return Commands.sequence(
+            Commands.runOnce(() -> intake.resetPivotEncoder(), intake)
         );
     }
 

@@ -20,7 +20,7 @@ public class Shooter extends SubsystemBase{
     private final TalonFX hoodMotor = new TalonFX(ShooterConstants.khoodMotorId);
     private final TalonFX shooterMotor = new TalonFX(ShooterConstants.kshooterMotorId);
     private final TalonFX indexerMotor = new TalonFX(ShooterConstants.kindexerMotorId);
-    private final PIDController hoodPID = new PIDController(0.05, 0,0);
+    private final PIDController hoodPID = new PIDController(0.0, 0,0);
     private double targetAngle = 0;
     private boolean isHoming = false;
 
@@ -114,10 +114,11 @@ public class Shooter extends SubsystemBase{
         indexerMotor.stopMotor();
     }
 
-    public void shootshoot(Boolean state) {
+    public void shootshoot(boolean state) {
         if(state){
-            shooterMotor.setVoltage(ShooterConstants.shooterSpeed);
-            indexerMotor.setVoltage(ShooterConstants.indexerSpeed);  
+            shooterMotor.setVoltage(ShooterConstants.shooterVoltage);
+            if (Math.abs(getShooterVoltage()) >= ShooterConstants.shooterVoltage * 0.9) {
+            indexerMotor.setVoltage(ShooterConstants.indexerVoltage); } 
         }else{
             shooterMotor.setVoltage(0);
             indexerMotor.setVoltage(0);

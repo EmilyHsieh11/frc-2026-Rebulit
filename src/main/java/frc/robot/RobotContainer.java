@@ -92,8 +92,8 @@ public class RobotContainer {
 
         shooter.setDefaultCommand(shooterMove);
         
-        xBox.b().toggleOnTrue(intakeHangUp);
-        intake.setDefaultCommand(intakeLowerMove);
+        // xBox.b().whileTrue(intakeHangUp);
+        // intake.setDefaultCommand(intakeLowerMove);
 
         drivetrain.setVisionSubsystem(vision);
 

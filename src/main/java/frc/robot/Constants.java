@@ -28,17 +28,17 @@ public final class Constants {
         public static final double shooterMotorSpeed = -4.5;
         public static final double hoodBiggestAngle = 16;
         public static final double closestAngle = 0.5;
-        public static final double shooterSpeed = 10;
-        public static final double indexerSpeed = -8;
+        public static final double shooterVoltage = 10;
+        public static final double indexerVoltage = -8;
 
         public static final int khoodMotorId = 43;
         public static final int kshooterMotorId = 44;
         public static final int kindexerMotorId = 58;
-        public static final double gearRatio = 20.0 / 360.0;
+        public static final double gearRatio = 20.0 / 360.0 / 3.0;
         public static final double littlePinkGearDiameter = 25; // mm
         public static final double littlePinkGearTeeth = 20; // 齒數
         public static final double sectorRadius = 253.9; // mm 
-        public static final double kG = 0.0236;
+        public static final double kG = 0.0;
 
         public static final InterpolatingDoubleTreeMap table = new InterpolatingDoubleTreeMap();
         static{

@@ -29,7 +29,7 @@ public class ShooterMove extends Command{
     @Override
     public void execute() {
         if(controller.getHID().getAButton()) {
-            shooter.shootshoot();
+            shooter.shootshoot(true);
         } else {
             shooterSpeed = 0;
             indexerSpeed = 0;

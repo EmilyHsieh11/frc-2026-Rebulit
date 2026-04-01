@@ -114,6 +114,17 @@ public class Shooter extends SubsystemBase{
         indexerMotor.stopMotor();
     }
 
+    public void shootshoot(Boolean state) {
+        if(state){
+            shooterMotor.setVoltage(ShooterConstants.shooterSpeed);
+            indexerMotor.setVoltage(ShooterConstants.indexerSpeed);  
+        }else{
+            shooterMotor.setVoltage(0);
+            indexerMotor.setVoltage(0);
+        }
+    }
+
+
 
     // Auto
     public void autoAim (double distance) {

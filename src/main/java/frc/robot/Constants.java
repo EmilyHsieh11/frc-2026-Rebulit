@@ -28,9 +28,11 @@ public final class Constants {
         public static final double shooterMotorSpeed = -4.5;
         public static final double hoodBiggestAngle = 16;
         public static final double closestAngle = 0.5;
+        public static final double shooterSpeed = 10;
+        public static final double indexerSpeed = -8;
+
         public static final int khoodMotorId = 43;
         public static final int kshooterMotorId = 44;
-        
         public static final int kindexerMotorId = 58;
         public static final double gearRatio = 20.0 / 360.0;
         public static final double littlePinkGearDiameter = 25; // mm
@@ -47,19 +49,17 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-         public static final int RollerId = 6;
+        public static final int RollerId = 6;
         public static final int PivotId = 61;
 
         public static final double pivotPosition = 0;
         public static final double rollervoltage = 0;
-        public static final double intakekp = 30.0, intakeki = 0, intakekd = 0, intakekv = 2.5, intakekg = -0.3, intakeks = 0;
+        public static final double intakekp = 30.0, intakeki = 0, intakekd = 0, intakekv = 2.5, intakekg = 0.3, intakeks = 0;
         
-        public static final double kIntakeVolts = -4.5;
-        public static final double kpivotLowered = -12.27;
-        public static final double kpivotRaised = -4.9;
-        // public static final double kpivotLowered = -0.362;
-        // public static final double kpivotRaised = 0.05;
-        public static final double kpivotRetracted = 0.0;
+        public static final double kIntakeVolts = -3.0;
+        public static final double kpivotLowered = 10.23;
+        public static final double kpivotRaised = 3.58;
+ 
     }
     
     public static final class VisionConstants {

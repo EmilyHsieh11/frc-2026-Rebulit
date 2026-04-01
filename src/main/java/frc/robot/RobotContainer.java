@@ -10,6 +10,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -18,11 +19,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.intake.IntakeMove;
+import frc.robot.commands.shooter.ShooterAuto;
 import frc.robot.commands.shooter.ShooterAutoAimAngle;
 import frc.robot.commands.shooter.ShooterMove;
 import frc.robot.generated.TunerConstants;
@@ -54,10 +57,10 @@ public class RobotContainer {
     private final Shooter shooter = new Shooter();
     private final Intake intake = new Intake();
 
-    private final IntakeMove intakeMove = new IntakeMove(intake,IntakeConstants.kpivotLowered,IntakeConstants.kIntakeVolts, shooter);
+    private final IntakeMove intakeMove = new IntakeMove(intake,IntakeConstants.kpivotLowered,IntakeConstants.kIntakeVolts);
     private final ShooterMove shooterMove = new ShooterMove(shooter, xBox);
+    private final ShooterAuto shooterAuto = new ShooterAuto(shooter, ShooterConstants.hoodBiggestAngle);
     private final ShooterAutoAimAngle shooterAimAngle = new ShooterAutoAimAngle(shooter, drivetrain, xBox);
-
 
 
 
@@ -68,9 +71,11 @@ public class RobotContainer {
     private final PhotonVision vision = new PhotonVision(() -> drivetrain.getState().Pose);
 
     public RobotContainer() {
+        NamedCommands.registerCommand("Left path shoot", shooterAuto);
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
 
+        
         configureBindings();
 
         // Warmup PathPlanner to avoid Java pauses
@@ -79,9 +84,22 @@ public class RobotContainer {
 
     private void configureBindings() {
 
-        shooter.setDefaultCommand(shooterMove);
+        // shooter.setDefaultCommand(shooterMove);
 
-        xBox.x().toggleOnTrue(intakeMove);
+        // xBox.x().toggleOnTrue(intakeMove);
+
+        xBox.start().onTrue(
+            new InstantCommand(() -> intake.resetPivotEncoder(), intake)
+        );
+        xBox.a().onTrue(
+            new IntakeMove(intake, IntakeConstants.kpivotLowered, IntakeConstants.kIntakeVolts)
+        );
+        
+        xBox.b().onTrue(
+           new IntakeMove(intake, IntakeConstants.kpivotRaised, 0.0)
+        );
+    
+
 
         drivetrain.setVisionSubsystem(vision);
 

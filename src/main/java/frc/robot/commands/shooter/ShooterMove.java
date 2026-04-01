@@ -29,14 +29,13 @@ public class ShooterMove extends Command{
     @Override
     public void execute() {
         if(controller.getHID().getAButton()) {
-            shooterSpeed = 11;
-            indexerSpeed = -8;
+            shooter.shootshoot();
         } else {
             shooterSpeed = 0;
             indexerSpeed = 0;
         }
-        shooter.shooterSetVoltage(shooterSpeed);
-        shooter.runIndexerMotor(indexerSpeed);
+        // shooter.shooterSetVoltage(shooterSpeed);
+        // shooter.runIndexerMotor(indexerSpeed);
 
         // 角度控制：按一下增加，不按時 m_targetAngle 會被子系統記住，不會歸零
         if(controller.getHID().getBButtonPressed()) {

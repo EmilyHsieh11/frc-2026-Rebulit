@@ -29,7 +29,7 @@ public final class Constants {
         public static final double hoodBiggestAngle = 16;
         public static final double closestAngle = 0.5;
         public static final double shooterVoltage = 10;
-        public static final double indexerVoltage = -8;
+        public static final double indexerVoltage = -10;
 
         public static final int khoodMotorId = 43;
         public static final int kshooterMotorId = 44;
@@ -38,7 +38,8 @@ public final class Constants {
         public static final double littlePinkGearDiameter = 25; // mm
         public static final double littlePinkGearTeeth = 20; // 齒數
         public static final double sectorRadius = 253.9; // mm 
-        public static final double kG = 0.0;
+        public static final double kG = 0.35;
+        public static final double kS = 0.17;
 
         public static final InterpolatingDoubleTreeMap table = new InterpolatingDoubleTreeMap();
         static{
@@ -57,7 +58,7 @@ public final class Constants {
         public static final double intakekp = 30.0, intakeki = 0, intakekd = 0, intakekv = 2.5, intakekg = 0.3, intakeks = 0;
         
         public static final double kIntakeVolts = -3.0;
-        public static final double kpivotLowered = 10.23;
+        public static final double kpivotLowered = 6.6; // 8.8
         public static final double kpivotRaised = 3.58;
  
     }

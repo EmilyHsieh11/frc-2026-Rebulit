@@ -20,14 +20,14 @@ public class Shooter extends SubsystemBase{
     private final TalonFX hoodMotor = new TalonFX(ShooterConstants.khoodMotorId);
     private final TalonFX shooterMotor = new TalonFX(ShooterConstants.kshooterMotorId);
     private final TalonFX indexerMotor = new TalonFX(ShooterConstants.kindexerMotorId);
-    private final PIDController hoodPID = new PIDController(0.0, 0,0);
+    private final PIDController hoodPID = new PIDController(0.04, 0,0);
     private double targetAngle = 0;
     private boolean isHoming = false;
 
     public Shooter() {
         TalonFXConfiguration hoodMotorConfig = new TalonFXConfiguration();
         hoodMotorConfig.MotorOutput
-        .withInverted(InvertedValue.CounterClockwise_Positive)
+        .withInverted(InvertedValue.Clockwise_Positive)
         .withNeutralMode(NeutralModeValue.Brake);
         hoodMotor.getConfigurator().apply(hoodMotorConfig);
 
@@ -117,8 +117,7 @@ public class Shooter extends SubsystemBase{
     public void shootshoot(boolean state) {
         if(state){
             shooterMotor.setVoltage(ShooterConstants.shooterVoltage);
-            if (Math.abs(getShooterVoltage()) >= ShooterConstants.shooterVoltage * 0.9) {
-            indexerMotor.setVoltage(ShooterConstants.indexerVoltage); } 
+            indexerMotor.setVoltage(ShooterConstants.indexerVoltage); 
         }else{
             shooterMotor.setVoltage(0);
             indexerMotor.setVoltage(0);
@@ -131,8 +130,9 @@ public class Shooter extends SubsystemBase{
     public void autoAim (double distance) {
         if(distance < 0.5){
             targetAngle = ShooterConstants.closestAngle;
+        }else{
+            targetAngle = ShooterConstants.table.get(distance);
         }
-        targetAngle = ShooterConstants.table.get(distance);
         this.setTargetAngle(targetAngle);
     }
  
@@ -165,10 +165,19 @@ public class Shooter extends SubsystemBase{
 
 
         if (!isHoming) {
+        double error = targetAngle - getHoodMotorAngleDegrees();
         double hoodPidOutput = hoodPID.calculate(getHoodMotorAngleDegrees(), getTargetAngle());
         double feedforward = ShooterConstants.kG * Math.cos(Math.toRadians(getHoodMotorAngleDegrees()));
-        double totalVoltage = hoodPidOutput + feedforward;
+        double kS_output = 0;
+        if (Math.abs(error) > 0.5) { // 這裡 0.5 度是 Deadband，你可以微調
+            kS_output = Math.signum(error) * ShooterConstants.kS;
+        }
+        double totalVoltage = hoodPidOutput + feedforward + kS_output;
         double safeVoltage = MathUtil.clamp(totalVoltage, -12.0, 12.0);
+        if ((getHoodMotorAngleDegrees() >= ShooterConstants.hoodBiggestAngle && safeVoltage > 0) ||
+            (getHoodMotorAngleDegrees() <= -1.0 && safeVoltage < 0)) {
+            safeVoltage = 0;
+        }
         hoodMotor.setVoltage(safeVoltage);
         }
     }

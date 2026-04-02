@@ -28,21 +28,22 @@ public class ShooterMove extends Command{
 
     @Override
     public void execute() {
-        if(controller.getHID().getRightBumperButton()) {
+        if(controller.getHID().getAButton()) {
             shooter.shootshoot(true);
         } else {
             shooter.shootshoot(false);
         }
 
-
+        double currentGoal = shooter.getTargetAngle();
         // 角度控制：按一下增加，不按時 m_targetAngle 會被子系統記住，不會歸零
         if(controller.getHID().getXButtonPressed()) {
-            double currentGoal = shooter.getTargetAngle();
             currentGoal += 1;
-            shooter.setTargetAngle(currentGoal);
         }else if(controller.getHID().getYButton()) {
-            shooter.setTargetAngle(0);
+            currentGoal -= 1;
+        }else if (controller.getHID().getLeftBumperButtonPressed()) {
+            currentGoal = 0;
         }
+        shooter.setTargetAngle(currentGoal);
     }
 
     @Override

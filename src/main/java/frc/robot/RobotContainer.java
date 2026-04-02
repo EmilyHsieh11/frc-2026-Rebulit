@@ -78,7 +78,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Left path shoot", shooterAuto);
         NamedCommands.registerCommand("Intaking", intakeLowerMove);
         NamedCommands.registerCommand("TimedShoot", new ParallelDeadlineGroup(new WaitCommand(2.0), shooterAuto));
-        autoChooser = AutoBuilder.buildAutoChooser("Tests");
+        autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Mode", autoChooser);
 
         
@@ -90,10 +90,10 @@ public class RobotContainer {
 
     private void configureBindings() {
 
-        shooter.setDefaultCommand(shooterMove);
+        // shooter.setDefaultCommand(shooterMove);
         
-        // xBox.b().whileTrue(intakeHangUp);
-        // intake.setDefaultCommand(intakeLowerMove);
+        xBox.rightBumper().onTrue(intakeHangUp);
+        xBox.leftBumper().onTrue(intakeLowerMove);
 
         drivetrain.setVisionSubsystem(vision);
 
@@ -118,7 +118,8 @@ public class RobotContainer {
         // joystick.x().whileTrue(getAutoAimDriveCommand().alongWith(shooterAimAngle));
         // joystick.y().whileTrue(shooterAimAngle);
 
-        ps5.create().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+        xBox.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+        // xBox.back().onTrue(drivetrain.runOnce(drivetrain::));
 
     }
 

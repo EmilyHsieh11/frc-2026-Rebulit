@@ -56,7 +56,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private Alliance currentAllianceColor = Alliance.Red;
     /** Swerve request to apply during robot-centric path following */
     private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
-
+    private boolean m_hasInitializedPose = false;
  
     /**
      * Constructs a CTRE SwerveDrivetrain using the specified constants.
@@ -191,6 +191,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
             });
         }
+
+        SmartDashboard.putNumber("Debug/Robot_To_Hub_Distance", getRobotToHubDistance());
+        SmartDashboard.putNumber("Debug/Robot_To_Hub_Heading_Deg", getRobotHubHeading().getDegrees());
+
         if (m_vision != null) {
             var visionEstimates = m_vision.getVisionLatestEstimates();
             for (var estimate : visionEstimates) {
@@ -210,6 +214,20 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         SmartDashboard.putNumber("Debug/Final_Pose_Y", finalPose.getY());
     }
 
+    public void autoAlignRobotHeading() {
+        DriverStation.getAlliance().ifPresent(allianceColor -> {
+            Rotation2d allianceRotation = (allianceColor == Alliance.Red) 
+                                        ? kRedAlliancePerspectiveRotation 
+                                        : kBlueAlliancePerspectiveRotation;
+            if (!m_hasInitializedPose) {
+                this.resetPose(new Pose2d(getState().Pose.getTranslation(), allianceRotation));
+                m_hasInitializedPose = true; 
+                System.out.println("First-time Alignment: Pose Initialized to " + allianceRotation.getDegrees());
+            }
+            setOperatorPerspectiveForward(allianceRotation);
+        });
+    }
+
     public void setVisionSubsystem(PhotonVision vision) {
         this.m_vision = vision;
     }
@@ -217,6 +235,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     /**
      * [機器人在場上的位置] -> [相機在機器人上的位置] -> [標籤在相機前方的位移] -> [Hub 在標籤後方的位移]
      * */
+
     public Pose2d getRobotPose() {
         return getState().Pose;
     }

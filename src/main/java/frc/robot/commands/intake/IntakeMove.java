@@ -18,24 +18,22 @@ public class IntakeMove extends Command {
     @Override
     public void initialize() {
         
-        m_intake.setPivotPosition(m_pivotPos);
+        // m_intake.setPivotPosition(m_pivotPos);
     }
 
     @Override
     public void execute() {
-        
         m_intake.setRollerVoltage(m_rollerVolts);
+        m_intake.setPivotPosition(m_pivotPos);
     }
 
     @Override
     public boolean isFinished() {
-
         return false; 
     }
 
     @Override
     public void end(boolean interrupted) {
-        
         m_intake.setRollerVoltage(0);
     }
 }

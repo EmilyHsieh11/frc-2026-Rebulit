@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.intake.IntakeMove;
+// import frc.robot.commands.intake.IntakeMove;
 import frc.robot.commands.shooter.ShooterAuto;
 import frc.robot.commands.shooter.ShooterAutoAimAngle;
 import frc.robot.commands.shooter.ShooterMove;
@@ -56,6 +57,7 @@ public class RobotContainer {
     private final CommandPS5Controller ps5 = new CommandPS5Controller(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    
 
     private final Intake intake = new Intake();
     private final IntakeMove intakeLowerMove = new IntakeMove(intake,IntakeConstants.kpivotLowered,IntakeConstants.kIntakeVolts);
@@ -75,8 +77,8 @@ public class RobotContainer {
     private final PhotonVision vision = new PhotonVision(() -> drivetrain.getState().Pose);
 
     public RobotContainer() {
-        NamedCommands.registerCommand("Left path shoot", shooterAuto);
-        NamedCommands.registerCommand("Intaking", intakeLowerMove);
+        NamedCommands.registerCommand("Left path shoot", new ShooterAuto(shooter, 3));
+        // NamedCommands.registerCommand("Intaking", intakeLowerMove);
         NamedCommands.registerCommand("TimedShoot", new ParallelDeadlineGroup(new WaitCommand(2.0), shooterAuto));
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Mode", autoChooser);
@@ -90,10 +92,13 @@ public class RobotContainer {
 
     private void configureBindings() {
 
-        // shooter.setDefaultCommand(shooterMove);
-        
+        shooter.setDefaultCommand(shooterMove);
+        xBox.a().onTrue(new ShooterAuto(shooter, 3));
+        xBox.b().onTrue(new ShooterAuto(shooter, 7));
+        xBox.x().onTrue(new ShooterAuto(shooter, 0));
         xBox.rightBumper().onTrue(intakeHangUp);
         xBox.leftBumper().onTrue(intakeLowerMove);
+        xBox.back().onTrue(new IntakeMove(intake, 0, 0.00));
 
         drivetrain.setVisionSubsystem(vision);
 
@@ -125,12 +130,13 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         return new SequentialCommandGroup(
+            initializeRobotPose(),
             shooterHomingCommand(),
             intakeHomingCommand(),
             new ParallelDeadlineGroup(
-                autoChooser.getSelected(), 
-                new IntakeMove(intake, IntakeConstants.kpivotLowered, IntakeConstants.kIntakeVolts))
-        );
+                autoChooser.getSelected()
+                // new IntakeMove(intake, IntakeConstants.kpivotLowered, IntakeConstants.kIntakeVolts)
+        ));
     
     }
 
@@ -166,6 +172,10 @@ public class RobotContainer {
         return Commands.sequence(
             Commands.runOnce(() -> intake.resetPivotEncoder(), intake)
         );
+    }
+
+    public Command initializeRobotPose() {
+        return Commands.runOnce(() -> drivetrain.autoAlignRobotHeading(), drivetrain);
     }
 
 

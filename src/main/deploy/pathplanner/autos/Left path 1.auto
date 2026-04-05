@@ -9,12 +9,6 @@
           "data": {
             "pathName": "Left path 1"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Left path shoot"
-          }
         }
       ]
     }

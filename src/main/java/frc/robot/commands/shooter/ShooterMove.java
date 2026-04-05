@@ -38,9 +38,9 @@ public class ShooterMove extends Command{
         // 角度控制：按一下增加，不按時 m_targetAngle 會被子系統記住，不會歸零
         if(controller.getHID().getXButtonPressed()) {
             currentGoal += 1;
-        }else if(controller.getHID().getYButton()) {
+        }else if(controller.getHID().getYButtonPressed()) {
             currentGoal -= 1;
-        }else if (controller.getHID().getLeftBumperButtonPressed()) {
+        }else if (controller.getHID().getLeftBumperButton()) {
             currentGoal = 0;
         }
         shooter.setTargetAngle(currentGoal);

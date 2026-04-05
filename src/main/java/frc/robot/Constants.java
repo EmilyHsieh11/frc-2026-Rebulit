@@ -20,12 +20,12 @@ public final class Constants {
 
         public static final double kAllianceZoneLength = 651.22 * inchesToMeters; // 16.54m
         public static final double kAllianceZoneWidth = 317.69 * inchesToMeters;
-        public static final Translation2d Red_Hub_Absolute_Position = new Translation2d(182.11*inchesToMeters, 158.84*inchesToMeters);
-        public static final Translation2d Blue_Hub_Absolute_Position = new Translation2d((651.22-182.11)*inchesToMeters, 158.84*inchesToMeters);
+        public static final Translation2d Red_Hub_Absolute_Position = new Translation2d((651.22-182.11)*inchesToMeters, 158.84*inchesToMeters);
+        public static final Translation2d Blue_Hub_Absolute_Position = new Translation2d(182.11*inchesToMeters, 158.84*inchesToMeters);
     }
 
     public static class ShooterConstants {
-        public static final double shooterMotorSpeed = -4.5;
+        // public static final double shooterMotorSpeed = -4.5;
         public static final double hoodBiggestAngle = 16;
         public static final double closestAngle = 0.5;
         public static final double shooterVoltage = 10;
@@ -58,7 +58,7 @@ public final class Constants {
         public static final double intakekp = 30.0, intakeki = 0, intakekd = 0, intakekv = 2.5, intakekg = 0.3, intakeks = 0;
         
         public static final double kIntakeVolts = -3.0;
-        public static final double kpivotLowered = 6.6; // 8.8
+        public static final double kpivotLowered = 8.8; // 8.8, 6.6
         public static final double kpivotRaised = 3.58;
  
     }

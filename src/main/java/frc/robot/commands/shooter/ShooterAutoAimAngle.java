@@ -27,11 +27,11 @@ public class ShooterAutoAimAngle extends Command{
         double distance = drivetrain.getRobotToHubDistance();
         shooter.autoAim(distance);
         if(shooter.isReadyToShoot()){
-            shooter.shooterSetVoltage(ShooterConstants.shooterMotorSpeed);
+            shooter.shootshoot(true);
         }else if(controller.getHID().getLeftBumperButton()){
-            shooter.shooterSetVoltage(ShooterConstants.shooterMotorSpeed);
+            shooter.shootshoot(true);
         }else{
-            shooter.shooterSetVoltage(0);
+            shooter.shootshoot(false);
         }
         
     }
@@ -39,7 +39,7 @@ public class ShooterAutoAimAngle extends Command{
     @Override
     public void end(boolean interrupted) {
         shooter.stopHoodMotor();
-        shooter.stopShooterMotor();
+        shooter.shootshoot(false);
     }
 
     @Override

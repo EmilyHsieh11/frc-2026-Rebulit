@@ -67,6 +67,7 @@ public class TunerConstants {
     // Configs for the Pigeon 2; leave this null to skip applying Pigeon 2 configs
     private static final Pigeon2Configuration pigeonConfigs = null;
 
+
     // CAN bus that the devices are located on;
     // All swerve devices must share the same CAN bus
     public static final CANBus kCANBus = new CANBus("", "./logs/example.hoot");
@@ -128,7 +129,7 @@ public class TunerConstants {
     private static final int kFrontLeftDriveMotorId = 31;
     private static final int kFrontLeftSteerMotorId = 32;
     private static final int kFrontLeftEncoderId = 30;
-    private static final Angle kFrontLeftEncoderOffset = Rotations.of(-0.001709);
+    private static final Angle kFrontLeftEncoderOffset = Rotations.of(-0.501709);
     private static final boolean kFrontLeftSteerMotorInverted = true;
     private static final boolean kFrontLeftEncoderInverted = false;
 
@@ -139,7 +140,7 @@ public class TunerConstants {
     private static final int kFrontRightDriveMotorId = 41;
     private static final int kFrontRightSteerMotorId = 42;
     private static final int kFrontRightEncoderId = 40;
-    private static final Angle kFrontRightEncoderOffset = Rotations.of(-0.262939);
+    private static final Angle kFrontRightEncoderOffset = Rotations.of(-0.762939);
     private static final boolean kFrontRightSteerMotorInverted = true;
     private static final boolean kFrontRightEncoderInverted = false;
 
@@ -151,7 +152,7 @@ public class TunerConstants {
     private static final int kBackLeftDriveMotorId = 21;
     private static final int kBackLeftSteerMotorId = 22;
     private static final int kBackLeftEncoderId = 20;
-    private static final Angle kBackLeftEncoderOffset = Rotations.of(0.127197);
+    private static final Angle kBackLeftEncoderOffset = Rotations.of(0.627197);
     private static final boolean kBackLeftSteerMotorInverted = true;
     private static final boolean kBackLeftEncoderInverted = false;
 
@@ -162,7 +163,7 @@ public class TunerConstants {
     private static final int kBackRightDriveMotorId = 11;
     private static final int kBackRightSteerMotorId = 12;
     private static final int kBackRightEncoderId = 10;
-    private static final Angle kBackRightEncoderOffset = Rotations.of(-0.471436);
+    private static final Angle kBackRightEncoderOffset = Rotations.of(-0.971436);
     private static final boolean kBackRightSteerMotorInverted = true;
     private static final boolean kBackRightEncoderInverted = false;
 

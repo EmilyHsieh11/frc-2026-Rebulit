@@ -116,7 +116,7 @@ public class Shooter extends SubsystemBase{
 
     public void shootshoot(boolean state) {
         if(state){
-            shooterMotor.setVoltage(ShooterConstants.shooterVoltage);
+            shooterMotor.setVoltage(6.5);
             indexerMotor.setVoltage(ShooterConstants.indexerVoltage); 
         }else{
             shooterMotor.setVoltage(0);

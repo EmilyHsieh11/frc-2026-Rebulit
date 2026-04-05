@@ -178,6 +178,7 @@ public class PhotonVision extends SubsystemBase{
         if (bestTargetThisCycle != null && currentRobotPose != null) {
             getVisionHubAbsolutePose();
             getVisionHubHeading();
+            getVisionRobotToHubDistance();
         }
 
     }

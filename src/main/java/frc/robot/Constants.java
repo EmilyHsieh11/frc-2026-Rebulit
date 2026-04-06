@@ -29,7 +29,7 @@ public final class Constants {
         public static final double hoodBiggestAngle = 16;
         public static final double closestAngle = 0.5;
         public static final double shooterVoltage = 10;
-        public static final double indexerVoltage = -10;
+        public static final double indexerVoltage = -4.5;
 
         public static final int khoodMotorId = 43;
         public static final int kshooterMotorId = 44;
@@ -61,6 +61,22 @@ public final class Constants {
         public static final double kpivotLowered = 8.8; // 8.8, 6.6
         public static final double kpivotRaised = 3.58;
  
+    }
+
+    public static class ElevatorConstants {
+        public static final int leftElevatorid = 59;
+        public static final double kMaxHeight = 0.1;
+        public static final double elevatorkp = 6.5, elevatorki = 0, elevatorkd = 0.1;
+        public static final double GearRatio = 125.0;
+        public static final double drumRadius = 0.015;
+        public static final double L1Height = 0.09;
+        public static final double L0Height = 0;
+
+
+        // 離地685.8nm
+        // 機器上離L1 510.9nm
+
+
     }
     
     public static final class VisionConstants {

@@ -94,6 +94,7 @@ public class Intake extends SubsystemBase {
         pivotMotor.stopMotor();
     }
 
+
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Intake/Pivot Position", getCurrentPosition());

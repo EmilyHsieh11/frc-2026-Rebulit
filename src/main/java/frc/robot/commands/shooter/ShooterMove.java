@@ -40,7 +40,7 @@ public class ShooterMove extends Command{
             currentGoal += 1;
         }else if(controller.getHID().getYButtonPressed()) {
             currentGoal -= 1;
-        }else if (controller.getHID().getLeftBumperButton()) {
+        }else if (controller.getHID().getBButton()) {
             currentGoal = 0;
         }
         shooter.setTargetAngle(currentGoal);

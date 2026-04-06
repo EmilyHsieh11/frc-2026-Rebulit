@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle path 1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Middle path shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle path 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle path 3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle path 4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Middle path shoot"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

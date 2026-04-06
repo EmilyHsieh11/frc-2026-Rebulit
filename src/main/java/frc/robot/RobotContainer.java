@@ -27,16 +27,19 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.elevator.ElevatorMove;
 import frc.robot.commands.intake.IntakeMove;
 // import frc.robot.commands.intake.IntakeMove;
 import frc.robot.commands.shooter.ShooterAuto;
 import frc.robot.commands.shooter.ShooterAutoAimAngle;
 import frc.robot.commands.shooter.ShooterMove;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import frc.robot.subsystems.vision.PhotonVision;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ShooterConstants;
 
@@ -68,6 +71,7 @@ public class RobotContainer {
     private final ShooterAuto shooterAuto = new ShooterAuto(shooter, ShooterConstants.hoodBiggestAngle);
     private final ShooterAutoAimAngle shooterAimAngle = new ShooterAutoAimAngle(shooter, drivetrain, xBox);
 
+    private final Elevator elevator = new Elevator();
 
 
 
@@ -92,7 +96,14 @@ public class RobotContainer {
 
     private void configureBindings() {
 
-        shooter.setDefaultCommand(shooterMove);
+        //pov up level1
+        xBox.povUp().onTrue(new ElevatorMove(elevator, ElevatorConstants.L1Height));
+
+        //pov down level0
+        xBox.povDown().onTrue(new ElevatorMove(elevator, ElevatorConstants.L0Height));
+
+        // shooter.setDefaultCommand(shooterMove);
+        intake.setDefaultCommand(new IntakeMove(intake, 0, 0));
         xBox.a().onTrue(new ShooterAuto(shooter, 3));
         xBox.b().onTrue(new ShooterAuto(shooter, 7));
         xBox.x().onTrue(new ShooterAuto(shooter, 0));
@@ -134,8 +145,8 @@ public class RobotContainer {
             shooterHomingCommand(),
             intakeHomingCommand(),
             new ParallelDeadlineGroup(
-                autoChooser.getSelected()
-                // new IntakeMove(intake, IntakeConstants.kpivotLowered, IntakeConstants.kIntakeVolts)
+                autoChooser.getSelected(),
+                new IntakeMove(intake, IntakeConstants.kpivotLowered, IntakeConstants.kIntakeVolts)
         ));
     
     }
